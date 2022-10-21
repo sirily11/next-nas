@@ -23,7 +23,10 @@
     "notistack": "^2.0.8",
     "pocketbase": "^0.7.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "common": "workspace:*",
+    "plugin": "workspace:*",
+    "folder-plugin": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18.11.2",

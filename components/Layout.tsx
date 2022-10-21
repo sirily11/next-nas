@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { cloneElement, useContext, useMemo } from "react";
 import {
   Box,
   AppBar,
@@ -16,7 +16,13 @@ interface Props {
 }
 
 export default function Layout(props: Props) {
-  const { title, dialog } = useContext(UIContext);
+  const { title, dialog, isDialogOpen } = useContext(UIContext);
+
+  const DialogComponent = useMemo(() => {
+    if (dialog !== undefined) {
+      return cloneElement(dialog, { isDialogOpen: isDialogOpen });
+    }
+  }, [dialog, isDialogOpen]);
 
   return (
     <Box sx={{ flexGrow: 1, height: "calc(100vh - 64px)" }}>
@@ -41,7 +47,7 @@ export default function Layout(props: Props) {
       <Box component={"main"} sx={{ height: "100%" }}>
         {props.children}
       </Box>
-      {dialog}
+      {DialogComponent}
     </Box>
   );
 }
