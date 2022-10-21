@@ -1,11 +1,10 @@
-import { useSnackbar } from "notistack";
 import { PluginSystem } from "plugin";
 import { createContext, useContext, useMemo } from "react";
 import { UIContext } from "./UIProvider";
 //@ts-ignore
 import folderPlugin from "folder-plugin";
 import { useParent } from "../hooks/useParent";
-import { PocketBaseService } from "../services/pocketBaseService";
+import { pocketBase } from "../services/pocketBaseService";
 
 interface PluginSystemInterface {
   pluginSystem: PluginSystem;
@@ -26,7 +25,7 @@ export function PluginSystemProvider(props: any) {
       closeDialog: closeDialog,
       isDialogOpen: false,
       useParent: useParent,
-      service: new PocketBaseService(),
+      service: pocketBase,
     });
 
     system.loadPlugin(folderPlugin, "folder-plugin");

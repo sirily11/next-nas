@@ -3,7 +3,7 @@ import { NasFile, NasFolder, NasFolderResponse } from "common";
 import type { GetServerSideProps, NextPage } from "next";
 import FilesArea from "../components/nas/FilesArea";
 import FolderList from "../components/nas/FolderList";
-import { PocketBaseService } from "../services/pocketBaseService";
+import { pocketBase } from "../services/pocketBaseService";
 
 interface Props {
   data: NasFolderResponse;
@@ -30,7 +30,6 @@ export default Home;
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
-  const service = new PocketBaseService();
   let folder = context.query.folder as string | undefined;
 
   if (!folder) {
@@ -38,9 +37,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   }
 
   const [result, currentFolder, pinnedFiles] = await Promise.all([
-    service.getFilesByParentId(folder),
-    service.getFolderById(folder),
-    service.getPinnedFilesByFolderId(folder),
+    pocketBase.getFilesByParentId(folder),
+    pocketBase.getFolderById(folder),
+    pocketBase.getPinnedFilesByFolderId(folder),
   ]);
 
   return {
