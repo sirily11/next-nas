@@ -66,6 +66,12 @@ export interface ServiceInterface {
    * Edit a folder
    */
   editFolder(folder: NasFolder): Promise<NasFolder>;
-
+  
   getFolderById(folderId?: string): Promise<NasFolder | undefined>;
+
+  /**
+   * Get a list of files by folder id
+   * @param folderId Folder id null if it is root
+   */
+  getPinnedFilesByFolderId(folderId?: string): Promise<NasFile[]>;
 }

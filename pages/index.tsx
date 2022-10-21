@@ -1,21 +1,32 @@
-import { Card, Divider, Grid } from "@mui/material";
+import { Card, Divider, Grid, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 import type { GetServerSideProps, NextPage } from "next";
+import FilesArea from "../components/nas/FilesArea";
 import FolderList from "../components/nas/FolderList";
+import PinnedFiles from "../components/nas/PinnedFiles";
 import { PocketBaseService } from "../services/pocketBaseService";
-import { NasFolder, NasFolderResponse } from "../services/serviceInterface";
+import {
+  NasFile,
+  NasFolder,
+  NasFolderResponse,
+} from "../services/serviceInterface";
 
 interface Props {
   data: NasFolderResponse;
   currentFolder?: NasFolder;
+  pinnedFiles: NasFile[];
 }
 
-const Home: NextPage<Props> = ({ data, currentFolder }: Props) => {
+const Home: NextPage<Props> = ({ data, currentFolder, pinnedFiles }: Props) => {
   return (
-    <Grid container sx={{ height: "100%" }}>
+    <Grid container sx={{ height: "100%" }} spacing={1}>
       <Grid item xs={12} sm={4} md={3} lg={2} sx={{ height: "100%" }}>
         <FolderList folders={data.folders} currentFolder={currentFolder} />
       </Grid>
       <Divider orientation="vertical" flexItem />
+      <Grid item xs={12} sm={7} md={8} lg={9}>
+        <FilesArea pinnedFiles={pinnedFiles} files={data.files} />
+      </Grid>
     </Grid>
   );
 };
@@ -26,11 +37,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   context
 ) => {
   const service = new PocketBaseService();
-  const folder = context.query.folder as string | undefined;
+  let folder = context.query.folder as string | undefined;
 
-  const [result, currentFolder] = await Promise.all([
+  if (!folder) {
+    folder = "";
+  }
+
+  const [result, currentFolder, pinnedFiles] = await Promise.all([
     service.getFilesByParentId(folder),
     service.getFolderById(folder),
+    service.getPinnedFilesByFolderId(folder),
   ]);
 
   return {
@@ -40,6 +56,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         currentFolder === undefined
           ? null
           : JSON.parse(JSON.stringify(currentFolder)),
+      pinnedFiles: JSON.parse(JSON.stringify(pinnedFiles)),
     },
   };
 };

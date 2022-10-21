@@ -11,6 +11,15 @@ const theme = createTheme({
       main: "#5529af",
     },
   },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "20px",
+        },
+      },
+    },
+  },
 });
 
 function MyApp({ Component, pageProps }: AppProps) {

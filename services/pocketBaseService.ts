@@ -19,6 +19,22 @@ export class PocketBaseService implements ServiceInterface {
       this.client = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL!);
     }
   }
+  async getPinnedFilesByFolderId(
+    folderId?: string | undefined
+  ): Promise<NasFile[]> {
+    const result = await this.client.records.getFullList(
+      "pinnedFiles",
+      undefined,
+      {
+        filter: `folder = "${folderId ?? null}"`,
+        expand: "file",
+      }
+    );
+
+    const files = result.map((file) => file["@expand"].file);
+
+    return files as any as NasFile[];
+  }
 
   async getFolderById(
     folderId?: string | undefined
