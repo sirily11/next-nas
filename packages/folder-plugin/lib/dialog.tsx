@@ -7,22 +7,19 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useContext } from "react";
-import { UIContext } from "../../contexts/UIProvider";
 import { NasFolder } from "common";
 import { useFormik } from "formik";
-import { useParent } from "../../hooks/useParent";
 import { Box } from "@mui/system";
-import { useFolder } from "../../hooks/useFolder";
 import { LoadingButton } from "@mui/lab";
+import { PluginProps } from "plugin/lib/types";
 
-interface Props {
+interface Props extends PluginProps {
   folder?: NasFolder;
 }
 
-export default function FolderDialog(props: Props) {
-  const { closeDialog, isDialogOpen, notify } = useContext(UIContext);
-  const { createFolder } = useFolder();
-  const parent = useParent();
+export function FolderDialog(props: Props) {
+  //   const { createFolder } = useFolder();
+  //   const parent = useParent();
 
   const formik = useFormik({
     initialValues: props.folder ?? {
@@ -30,24 +27,24 @@ export default function FolderDialog(props: Props) {
       parent: parent,
     },
     onSubmit: async (values) => {
-      try {
-        if (props.folder) {
-          // update folder
-        } else {
-          // create folder
-          await createFolder(values as NasFolder);
-          notify("Folder created", "success");
-          closeDialog();
-        }
-      } catch (err) {
-        notify(`${err}`, "error");
-      }
+      //   try {
+      //     if (props.folder) {
+      //       // update folder
+      //     } else {
+      //       // create folder
+      //       await createFolder(values as NasFolder);
+      //       notify("Folder created", "success");
+      //       closeDialog();
+      //     }
+      //   } catch (err) {
+      //     notify(`${err}`, "error");
+      //   }
     },
   });
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Dialog open={isDialogOpen} fullWidth>
+      <Dialog open={props.isDialogOpen} fullWidth>
         <DialogTitle>
           {props.folder ? "Edit folder" : "Create a new folder"}
         </DialogTitle>
@@ -64,7 +61,7 @@ export default function FolderDialog(props: Props) {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => closeDialog()}>Close</Button>
+          <Button onClick={() => props.closeDialog()}>Close</Button>
           <LoadingButton
             loading={formik.isSubmitting}
             onClick={() => formik.submitForm()}

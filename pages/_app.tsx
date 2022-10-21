@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { UIContextProvider } from "../contexts/UIProvider";
 import { SnackbarProvider } from "notistack";
+import { PluginSystemProvider } from "../contexts/PluginContext";
 
 const theme = createTheme({
   palette: {
@@ -26,11 +27,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SnackbarProvider>
       <UIContextProvider>
-        <ThemeProvider theme={theme}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
+        <PluginSystemProvider>
+          <ThemeProvider theme={theme}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </PluginSystemProvider>
       </UIContextProvider>
     </SnackbarProvider>
   );

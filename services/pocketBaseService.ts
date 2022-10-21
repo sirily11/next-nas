@@ -1,10 +1,10 @@
-import {
-  NasFolder,
-  ServiceInterface,
-  NasFile,
-  NasFolderResponse,
-} from "./serviceInterface";
 import PocketBase from "pocketbase";
+import {
+  NasFile,
+  NasFolder,
+  NasFolderResponse,
+  ServiceInterface,
+} from "common";
 
 /**
  * Create a pocket base service

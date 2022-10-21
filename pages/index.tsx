@@ -1,15 +1,9 @@
-import { Card, Divider, Grid, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Divider, Grid } from "@mui/material";
+import { NasFile, NasFolder, NasFolderResponse } from "common";
 import type { GetServerSideProps, NextPage } from "next";
 import FilesArea from "../components/nas/FilesArea";
 import FolderList from "../components/nas/FolderList";
-import PinnedFiles from "../components/nas/PinnedFiles";
 import { PocketBaseService } from "../services/pocketBaseService";
-import {
-  NasFile,
-  NasFolder,
-  NasFolderResponse,
-} from "../services/serviceInterface";
 
 interface Props {
   data: NasFolderResponse;

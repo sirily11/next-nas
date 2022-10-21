@@ -21,6 +21,7 @@ export function UIContextProvider(props: any) {
   const { enqueueSnackbar } = useSnackbar();
 
   const showDialog = useCallback((children: JSX.Element) => {
+    console.log("Showing dialog");
     setDialog(children);
     setTimeout(() => {
       setDialogOpen(true);

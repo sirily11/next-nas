@@ -15,10 +15,13 @@ import {
   usePopupState,
 } from "material-ui-popup-state/hooks";
 import { useRouter } from "next/router";
-import { NasFolder } from "../../services/serviceInterface";
+import { NasFolder } from "common";
 import FolderItemMenu from "../menus/FolderItemMenu";
 import FolderMenu from "../menus/FolderMenu";
 import BackIcon from "@mui/icons-material/ArrowBack";
+import { useContext, useState } from "react";
+import { ContextMenu } from "plugin";
+import { PluginSystemContext } from "../../contexts/PluginContext";
 
 interface Props {
   currentFolder?: NasFolder;
@@ -31,6 +34,8 @@ export default function FolderList({ folders, currentFolder }: Props) {
     variant: "popover",
     popupId: "folder",
   });
+  const { pluginSystem } = useContext(PluginSystemContext);
+  const [menus, setMenus] = useState<ContextMenu[]>([]);
 
   return (
     <List
@@ -64,8 +69,20 @@ export default function FolderList({ folders, currentFolder }: Props) {
           flexGrow: 1,
         }}
         {...bindContextMenu(popupState)}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          const menus = pluginSystem.onFolderAreaContextMenu();
+          if (menus !== "not implemented") {
+            setMenus(menus);
+          }
+          bindContextMenu(popupState).onContextMenu(e);
+        }}
       />
-      <FolderMenu menuProps={bindMenu(popupState)} popupState={popupState} />
+      <FolderMenu
+        menuProps={bindMenu(popupState)}
+        popupState={popupState}
+        menus={menus}
+      />
     </List>
   );
 }
@@ -76,11 +93,21 @@ function FolderItem({ folder }: { folder: NasFolder }) {
     popupId: `folder-${folder.id}`,
   });
   const router = useRouter();
+  const [menus, setMenus] = useState<ContextMenu[]>([]);
+  const { pluginSystem } = useContext(PluginSystemContext);
 
   return (
     <Box>
       <ListItemButton
         {...bindContextMenu(popupState)}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          const menus = pluginSystem.onFolderContextMenu(folder);
+          if (menus !== "not implemented") {
+            setMenus(menus);
+          }
+          bindContextMenu(popupState).onContextMenu(e);
+        }}
         onClick={() => {
           router.push("/?folder=" + folder.id);
         }}
@@ -93,6 +120,7 @@ function FolderItem({ folder }: { folder: NasFolder }) {
       <FolderItemMenu
         menuProps={bindMenu(popupState)}
         popupState={popupState}
+        menus={menus}
       />
     </Box>
   );

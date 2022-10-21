@@ -3,7 +3,7 @@ import { Stack } from "@mui/system";
 import React from "react";
 import Image from "next/image";
 import ArticleIcon from "@mui/icons-material/Article";
-import { NasFile } from "../../services/serviceInterface";
+import { NasFile } from "common";
 
 interface Props {
   file: NasFile;
