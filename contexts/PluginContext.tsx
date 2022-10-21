@@ -5,6 +5,7 @@ import { UIContext } from "./UIProvider";
 //@ts-ignore
 import folderPlugin from "folder-plugin";
 import { useParent } from "../hooks/useParent";
+import { PocketBaseService } from "../services/pocketBaseService";
 
 interface PluginSystemInterface {
   pluginSystem: PluginSystem;
@@ -25,6 +26,7 @@ export function PluginSystemProvider(props: any) {
       closeDialog: closeDialog,
       isDialogOpen: false,
       useParent: useParent,
+      service: new PocketBaseService(),
     });
 
     system.loadPlugin(folderPlugin, "folder-plugin");

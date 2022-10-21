@@ -13,6 +13,8 @@ export default class TestPlugin extends Plugin {
         return undefined;
       },
       isDialogOpen: false,
+      // @ts-ignore
+      service: {},
     });
   }
 

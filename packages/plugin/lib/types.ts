@@ -1,4 +1,4 @@
-import { NasFile, NasFolder } from "common";
+import { NasFile, NasFolder, ServiceInterface } from "common";
 
 export type NotImplemented = "not implemented";
 export type Implemented = "implemented";
@@ -41,4 +41,5 @@ export interface PluginProps {
   closeDialog: () => void;
   useParent: () => string | undefined;
   isDialogOpen: boolean;
+  service: ServiceInterface;
 }

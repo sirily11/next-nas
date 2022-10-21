@@ -1,3 +1,4 @@
+import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -6,11 +7,9 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React, { useContext } from "react";
+import { Box } from "@mui/system";
 import { NasFolder } from "common";
 import { useFormik } from "formik";
-import { Box } from "@mui/system";
-import { LoadingButton } from "@mui/lab";
 import { PluginProps } from "plugin/lib/types";
 
 interface Props extends PluginProps {
@@ -18,27 +17,26 @@ interface Props extends PluginProps {
 }
 
 export function FolderDialog(props: Props) {
-  //   const { createFolder } = useFolder();
-  //   const parent = useParent();
-
   const formik = useFormik({
     initialValues: props.folder ?? {
       name: "",
-      parent: parent,
+      parent: props.useParent(),
     },
     onSubmit: async (values) => {
-      //   try {
-      //     if (props.folder) {
-      //       // update folder
-      //     } else {
-      //       // create folder
-      //       await createFolder(values as NasFolder);
-      //       notify("Folder created", "success");
-      //       closeDialog();
-      //     }
-      //   } catch (err) {
-      //     notify(`${err}`, "error");
-      //   }
+      console.log(values);
+      try {
+        if (props.folder) {
+          // update folder
+        } else {
+          // create folder
+          await props.service.createFolder(values as NasFolder);
+          props.notify("Folder created", "success");
+          props.closeDialog();
+        }
+      } catch (err) {
+        console.error(err);
+        props.notify(`${err}`, "error");
+      }
     },
   });
 

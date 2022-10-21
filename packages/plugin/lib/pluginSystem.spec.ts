@@ -2,6 +2,7 @@ import { PluginSystem } from "./pluginSystem";
 import TestPlugin from "./testPlugin";
 import { PluginProps } from "./types";
 
+//@ts-ignore
 const defaultProps: PluginProps = {
   notify: function (message: string, variant: any): void {},
   setTitle: function (title: string): void {},
