@@ -76,3 +76,5 @@ export class PocketBaseService implements ServiceInterface {
     throw new Error("Method not implemented.");
   }
 }
+
+export const pocketBase = new PocketBaseService();

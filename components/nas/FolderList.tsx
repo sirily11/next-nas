@@ -19,16 +19,20 @@ import { NasFolder } from "common";
 import FolderItemMenu from "../menus/FolderItemMenu";
 import FolderMenu from "../menus/FolderMenu";
 import BackIcon from "@mui/icons-material/ArrowBack";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ContextMenu } from "plugin";
 import { PluginSystemContext } from "../../contexts/PluginContext";
+import { pocketBase } from "../../services/pocketBaseService";
 
 interface Props {
   currentFolder?: NasFolder;
   folders: NasFolder[];
 }
 
-export default function FolderList({ folders, currentFolder }: Props) {
+export default function FolderList({
+  folders: serverLoadedFolders,
+  currentFolder,
+}: Props) {
   const router = useRouter();
   const popupState = usePopupState({
     variant: "popover",
@@ -36,6 +40,24 @@ export default function FolderList({ folders, currentFolder }: Props) {
   });
   const { pluginSystem } = useContext(PluginSystemContext);
   const [menus, setMenus] = useState<ContextMenu[]>([]);
+  const [folders, setFolders] = useState<NasFolder[]>(serverLoadedFolders);
+
+  useEffect(() => {
+    pocketBase.client.realtime.subscribe("folders", (data) => {
+      setFolders((value) => {
+        let index = folders.findIndex((f) => f.id === data.record.id);
+        if (index === -1) {
+          return [...value, data.record as any];
+        }
+        folders[index] = data.record as any;
+        return [...folders];
+      });
+    });
+
+    return () => {
+      pocketBase.client.realtime.unsubscribe("folders");
+    };
+  }, []);
 
   return (
     <List
