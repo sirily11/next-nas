@@ -16,13 +16,14 @@ import {
 } from "material-ui-popup-state/hooks";
 import { useRouter } from "next/router";
 import { NasFolder } from "common";
-import FolderItemMenu from "../menus/FolderItemMenu";
-import FolderMenu from "../menus/FolderMenu";
+import FolderItemMenu from "../menus/NasContextMenu";
+
 import BackIcon from "@mui/icons-material/ArrowBack";
 import { useContext, useEffect, useState } from "react";
 import { ContextMenu } from "plugin";
 import { PluginSystemContext } from "../../contexts/PluginContext";
 import { pocketBase } from "../../services/pocketBaseService";
+import NasContextMenu from "../menus/NasContextMenu";
 
 interface Props {
   currentFolder?: NasFolder;
@@ -110,7 +111,7 @@ export default function FolderList({
           bindContextMenu(popupState).onContextMenu(e);
         }}
       />
-      <FolderMenu
+      <NasContextMenu
         menuProps={bindMenu(popupState)}
         popupState={popupState}
         menus={menus}

@@ -1,21 +1,20 @@
-import { Card, CardActionArea, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Grid } from "@mui/material";
 import { NasFile } from "common";
-import ArticleIcon from "@mui/icons-material/Article";
+import { PopupState } from "material-ui-popup-state/core";
 
-import Image from "next/image";
 import FileItem from "./FileItem";
 
 interface Props {
   files: NasFile[];
+  parentPopupState: PopupState;
 }
 
-export default function FilesList({ files }: Props) {
+export default function FilesList({ files, parentPopupState }: Props) {
   return (
     <Grid container>
       {files.map((file) => (
-        <Grid item lg={3} key={`file-${file.id}`}>
-          <FileItem file={file} />
+        <Grid item lg={2} md={3} key={`file-${file.id}`}>
+          <FileItem file={file} parentPopupState={parentPopupState} />
         </Grid>
       ))}
     </Grid>
