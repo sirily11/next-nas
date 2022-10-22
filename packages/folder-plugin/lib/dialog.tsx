@@ -27,6 +27,9 @@ export function FolderDialog(props: Props) {
       try {
         if (props.folder) {
           // update folder
+          await props.service.editFolder(values as NasFolder);
+          props.notify("Updated the folder", "success");
+          props.closeDialog();
         } else {
           // create folder
           await props.service.createFolder(values as NasFolder);
