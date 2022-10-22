@@ -45,12 +45,18 @@ export default function FolderList({
   useEffect(() => {
     pocketBase.client.realtime.subscribe("folders", (data) => {
       setFolders((value) => {
-        let index = folders.findIndex((f) => f.id === data.record.id);
-        if (index === -1) {
+        if (data.action === "create") {
           return [...value, data.record as any];
+        } else if (data.action === "update") {
+          let index = folders.findIndex((f) => f.id === data.record.id);
+          if (index !== -1) {
+            value[index] = data.record as any;
+          }
+          return value;
+        } else if (data.action === "delete") {
+          return value.filter((f) => f.id !== data.record.id);
         }
-        folders[index] = data.record as any;
-        return [...folders];
+        return value;
       });
     });
 
@@ -58,6 +64,10 @@ export default function FolderList({
       pocketBase.client.realtime.unsubscribe("folders");
     };
   }, []);
+
+  useEffect(() => {
+    setFolders(serverLoadedFolders);
+  }, [serverLoadedFolders]);
 
   return (
     <List

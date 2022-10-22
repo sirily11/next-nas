@@ -69,11 +69,17 @@ export class PocketBaseService implements ServiceInterface {
 
     return result as any as NasFolder;
   }
-  deleteFolder(folderId?: string | undefined): Promise<void> {
-    throw new Error("Method not implemented.");
+  async deleteFolder(folderId?: string | undefined): Promise<void> {
+    await this.client.records.delete("folders", folderId!);
   }
-  editFolder(folder: NasFolder): Promise<NasFolder> {
-    throw new Error("Method not implemented.");
+  async editFolder(folder: NasFolder): Promise<NasFolder> {
+    const result = await this.client.records.update(
+      "folders",
+      folder.id,
+      folder
+    );
+
+    return result as any as NasFolder;
   }
 }
 

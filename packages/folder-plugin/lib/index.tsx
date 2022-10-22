@@ -6,9 +6,22 @@ export default class FolderPlugin extends Plugin {
   onFolderContextMenu(folder: NasFolder): "not implemented" | ContextMenu[] {
     return [
       {
-        name: "Open in new tab",
+        name: "Rename",
         onClick: () => {
-          this.props.notify("Opening folder in new tab", "success");
+          this.props.showDialog(
+            <FolderDialog {...this.props} folder={folder} />
+          );
+        },
+      },
+
+      {
+        name: `Delete the folder ${folder.name}`,
+        onClick: async () => {
+          const confirmed = window.confirm(`Delete the folder ${folder.name}?`);
+          if (confirmed) {
+            await this.props.service.deleteFolder(folder.id);
+            this.props.notify("Deleted the folder", "success");
+          }
         },
       },
     ];
