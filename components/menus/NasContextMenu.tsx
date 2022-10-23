@@ -1,3 +1,4 @@
+import React from "react";
 import { Divider, Menu, MenuItem, MenuProps } from "@mui/material";
 import { PopupState } from "material-ui-popup-state/core";
 import { ContextMenu } from "plugin";
@@ -8,10 +9,10 @@ interface Props {
   menus: ContextMenu[];
 }
 
-export default function FolderMenu(props: Props) {
+export default function NasContextMenu(props: Props) {
   return (
     <Menu {...props.menuProps}>
-      {props.menus?.map((menu) =>
+      {props.menus.map((menu) =>
         menu.isDivider ? (
           <Divider />
         ) : (

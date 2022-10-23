@@ -20,10 +20,10 @@ export class Plugin implements PluginInterface {
     this.props = rest;
   }
   onFileAreaContextMenu(): ContextMenu[] | "not implemented" {
-    throw new Error("Method not implemented.");
+    return "not implemented";
   }
   onFolderAreaContextMenu(): ContextMenu[] | "not implemented" {
-    throw new Error("Method not implemented.");
+    return "not implemented";
   }
 
   /**

@@ -26,7 +26,8 @@
     "react-dom": "18.2.0",
     "common": "workspace:*",
     "plugin": "workspace:*",
-    "folder-plugin": "workspace:*"
+    "folder-plugin": "workspace:*",
+    "file-plugin": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18.11.2",

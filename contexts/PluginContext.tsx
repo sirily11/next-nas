@@ -3,6 +3,7 @@ import { createContext, useContext, useMemo } from "react";
 import { UIContext } from "./UIProvider";
 //@ts-ignore
 import folderPlugin from "folder-plugin";
+import filePlugin from "file-plugin";
 import { useParent } from "../hooks/useParent";
 import { pocketBase } from "../services/pocketBaseService";
 
@@ -29,6 +30,7 @@ export function PluginSystemProvider(props: any) {
     });
 
     system.loadPlugin(folderPlugin, "folder-plugin");
+    system.loadPlugin(filePlugin, "file-plugin");
 
     return system;
   }, []);
