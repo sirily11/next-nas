@@ -11,7 +11,7 @@ interface Props {
 
 export default function FilesList({ files, parentPopupState }: Props) {
   return (
-    <Grid container>
+    <Grid container spacing={2}>
       {files.map((file) => (
         <Grid item lg={2} md={3} key={`file-${file.id}`}>
           <FileItem file={file} parentPopupState={parentPopupState} />

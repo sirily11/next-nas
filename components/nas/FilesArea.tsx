@@ -9,20 +9,19 @@ import React, { useContext, useState } from "react";
 import { NasFile } from "common";
 
 import FilesList from "./FilesList";
-import PinnedFiles from "./PinnedFiles";
 import { PluginSystemContext } from "../../contexts/PluginContext";
 import { ContextMenu } from "plugin";
 import NasContextMenu from "../menus/NasContextMenu";
 
 interface Props {
-  pinnedFiles: NasFile[];
   files: NasFile[];
 }
 
-export default function FilesArea({ pinnedFiles, files }: Props) {
+export default function FilesArea({ files: serverRenderedFiles }: Props) {
   const popupState = usePopupState({ variant: "popover", popupId: "files" });
   const [menus, setMenus] = useState<ContextMenu[]>([]);
   const { pluginSystem } = useContext(PluginSystemContext);
+  const [files, setFiles] = useState<NasFile[]>(serverRenderedFiles);
 
   return (
     <Stack
@@ -43,11 +42,17 @@ export default function FilesArea({ pinnedFiles, files }: Props) {
       <Typography variant="h6" fontWeight={"bold"}>
         Pinned files
       </Typography>
-      <PinnedFiles pinnedFiles={pinnedFiles} parentPopupState={popupState} />
+      <FilesList
+        files={files.filter((f) => f.pinned)}
+        parentPopupState={popupState}
+      />
       <Typography variant="h6" fontWeight={"bold"}>
         Files
       </Typography>
-      <FilesList files={files} parentPopupState={popupState} />
+      <FilesList
+        files={files.filter((f) => !f.pinned)}
+        parentPopupState={popupState}
+      />
       <NasContextMenu
         menuProps={bindMenu(popupState)}
         popupState={popupState}

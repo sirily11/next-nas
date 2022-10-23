@@ -8,10 +8,9 @@ import { pocketBase } from "../services/pocketBaseService";
 interface Props {
   data: NasFolderResponse;
   currentFolder?: NasFolder;
-  pinnedFiles: NasFile[];
 }
 
-const Home: NextPage<Props> = ({ data, currentFolder, pinnedFiles }: Props) => {
+const Home: NextPage<Props> = ({ data, currentFolder }: Props) => {
   return (
     <Grid container sx={{ height: "100%" }} spacing={1}>
       <Grid item xs={12} sm={4} md={3} lg={2} sx={{ height: "100%" }}>
@@ -19,7 +18,7 @@ const Home: NextPage<Props> = ({ data, currentFolder, pinnedFiles }: Props) => {
       </Grid>
       <Divider orientation="vertical" flexItem />
       <Grid item xs={12} sm={7} md={8} lg={9}>
-        <FilesArea pinnedFiles={pinnedFiles} files={data.files} />
+        <FilesArea files={data.files} />
       </Grid>
     </Grid>
   );
@@ -36,10 +35,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     folder = "";
   }
 
-  const [result, currentFolder, pinnedFiles] = await Promise.all([
+  const [result, currentFolder] = await Promise.all([
     pocketBase.getFilesByParentId(folder),
     pocketBase.getFolderById(folder),
-    pocketBase.getPinnedFilesByFolderId(folder),
   ]);
 
   return {
@@ -49,7 +47,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         currentFolder === undefined
           ? null
           : JSON.parse(JSON.stringify(currentFolder)),
-      pinnedFiles: JSON.parse(JSON.stringify(pinnedFiles)),
     },
   };
 };
