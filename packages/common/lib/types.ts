@@ -38,4 +38,9 @@ export interface NasFile extends Document {
    * File type
    */
   type: string;
+
+  /**
+   * Is file pinned
+   */
+  pinned: boolean;
 }

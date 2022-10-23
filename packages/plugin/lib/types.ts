@@ -3,6 +3,7 @@ import { NasFile, NasFolder, ServiceInterface } from "common";
 export type NotImplemented = "not implemented";
 export type Implemented = "implemented";
 export interface ContextMenu {
+  leading?: JSX.Element;
   name: string;
   isDivider?: boolean;
   onClick: () => void;

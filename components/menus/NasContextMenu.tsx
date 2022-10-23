@@ -1,5 +1,12 @@
 import React from "react";
-import { Divider, Menu, MenuItem, MenuProps } from "@mui/material";
+import {
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  MenuProps,
+} from "@mui/material";
 import { PopupState } from "material-ui-popup-state/core";
 import { ContextMenu } from "plugin";
 
@@ -23,7 +30,8 @@ export default function NasContextMenu(props: Props) {
               props.popupState.close();
             }}
           >
-            {menu.name}
+            {menu.leading && <ListItemIcon>{menu.leading}</ListItemIcon>}
+            <ListItemText>{menu.name}</ListItemText>
           </MenuItem>
         )
       )}
