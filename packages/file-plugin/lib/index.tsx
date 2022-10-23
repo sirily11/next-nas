@@ -33,7 +33,7 @@ export default class FilePlugin extends Plugin {
       onClick: async () => {
         const confirmed = window.confirm(`Delete the file ${file.name}?`);
         if (confirmed) {
-          // await this.props.service.deleteFolder(file.id);
+          await this.props.service.deleteFile(file.id);
           this.props.notify("Deleted the file", "success");
         }
       },

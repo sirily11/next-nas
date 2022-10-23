@@ -30,4 +30,6 @@ export interface ServiceInterface {
   getFolderById(folderId?: string): Promise<NasFolder | undefined>;
 
   updateFile(file: NasFile): Promise<NasFile>;
+
+  deleteFile(fileId?: string): Promise<void>;
 }

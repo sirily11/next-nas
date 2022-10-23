@@ -19,6 +19,9 @@ export class PocketBaseService implements ServiceInterface {
       this.client = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL!);
     }
   }
+  async deleteFile(fileId?: string | undefined): Promise<void> {
+    await this.client.records.delete("files", fileId!);
+  }
   async updateFile(file: NasFile): Promise<NasFile> {
     console.log("updating file", file);
     const result = await this.client.records.update("files", file.id, file);
