@@ -121,12 +121,18 @@ export class PluginSystem implements PluginInterface {
     }
     return "not implemented";
   }
-  onFilePreview(file: NasFile): "not implemented" | "implemented" {
+  onFilePreview(file: NasFile): "not implemented" | JSX.Element[] {
+    let previewContents: JSX.Element[] = [];
+
     for (const plugin of this.plugins) {
-      const result = plugin.onFileClick(file);
-      if (result === "implemented") {
-        return "implemented";
+      const result = plugin.onFilePreview(file);
+      if (result !== "not implemented") {
+        previewContents = previewContents.concat(result);
       }
+    }
+
+    if (previewContents.length !== 0) {
+      return previewContents;
     }
     return "not implemented";
   }

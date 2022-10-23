@@ -17,7 +17,8 @@
     "@mui/material": "^5.10.10",
     "@mui/system": "^5.10.10",
     "react-dom": "18.2.0",
-    "react": "18.2.0"
+    "react": "18.2.0",
+    "pretty-bytes": "6.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",

@@ -63,7 +63,7 @@ export class Plugin implements PluginInterface {
     return "not implemented";
   }
 
-  onFilePreview(file: NasFile): NotImplemented | Implemented {
+  onFilePreview(file: NasFile): NotImplemented | JSX.Element[] {
     return "not implemented";
   }
 

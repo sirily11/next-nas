@@ -11,13 +11,31 @@ import {
  */
 export class PocketBaseService implements ServiceInterface {
   client: PocketBase;
+  url: string;
 
   constructor(client?: PocketBase) {
     if (client) {
       this.client = client;
+      this.url = client.baseUrl;
     } else {
+      this.url = process.env.NEXT_PUBLIC_POCKETBASE_URL!;
       this.client = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL!);
     }
+  }
+  getFileURL(file: NasFile): string {
+    return `${this.url}/api/files/files/${file.id}/${file.file}`;
+  }
+
+  async uploadFile(file: NasFile): Promise<NasFile> {
+    const formData = new FormData();
+    Object.entries(file).forEach(([key, value]) => {
+      if (key === "id") {
+        return;
+      }
+      formData.append(key, value);
+    });
+    const result = await this.client.records.create("files", formData);
+    return result as any as NasFile;
   }
   async deleteFile(fileId?: string | undefined): Promise<void> {
     await this.client.records.delete("files", fileId!);

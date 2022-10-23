@@ -1,8 +1,8 @@
 interface Document {
   id: string;
-  created: Date;
-  updated: Date;
-  created_by: string;
+  created?: Date;
+  updated?: Date;
+  created_by?: string;
 }
 
 export interface NasFolder extends Document {
@@ -24,7 +24,7 @@ export interface NasFile extends Document {
   /**
    * Parent of the file
    */
-  parent: string;
+  parent?: string;
   /**
    * Size of the file
    */
