@@ -6,6 +6,8 @@ export interface NasFolderResponse {
 }
 
 export interface ServiceInterface {
+  getFileURL(file: NasFile): string;
+
   /**
    * Get list of files and folders by parent id
    * @param parentId Parent id, null if it is root
@@ -32,4 +34,6 @@ export interface ServiceInterface {
   updateFile(file: NasFile): Promise<NasFile>;
 
   deleteFile(fileId?: string): Promise<void>;
+
+  uploadFile(file: NasFile): Promise<NasFile>;
 }

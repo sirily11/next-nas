@@ -1,76 +1,102 @@
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
+  Card,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  LinearProgress,
   TextField,
+  Typography,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import { NasFolder } from "common";
+import { Box, Stack } from "@mui/system";
+import { NasFile, NasFolder } from "common";
 import { useFormik } from "formik";
 import { PluginProps } from "plugin/lib/types";
+import { useCallback, useState } from "react";
 
-interface Props extends PluginProps {
-  folder?: NasFolder;
-}
+interface Props extends PluginProps {}
 
-export function FolderDialog(props: Props) {
-  const formik = useFormik({
-    initialValues: props.folder ?? {
-      name: "",
-      parent: props.useParent(),
-    },
-    onSubmit: async (values) => {
-      console.log(values);
-      try {
-        if (props.folder) {
-          // update folder
-          await props.service.editFolder(values as NasFolder);
-          props.notify("Updated the folder", "success");
-          props.closeDialog();
-        } else {
-          // create folder
-          await props.service.createFolder(values as NasFolder);
-          props.notify("Folder created", "success");
-          props.closeDialog();
-        }
-      } catch (err) {
-        console.error(err);
-        props.notify(`${err}`, "error");
+export function UploadDialog(props: Props) {
+  const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState<NasFile[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<NasFile[]>([]);
+  const parent = props.useParent();
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const inputFiles = Array.from(e.target.files);
+        const newFiles: NasFile[] = inputFiles.map((file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          parent: parent as any,
+          pinned: false,
+          file: file as any,
+          id: null as any,
+        }));
+        setUploadedFiles([]);
+        setFiles(newFiles);
       }
     },
-  });
+    []
+  );
+
+  const upload = useCallback(async () => {
+    if (files.length === 0) {
+      return;
+    }
+    setLoading(true);
+    for (const file of files) {
+      try {
+        await props.service.uploadFile(file);
+      } catch (err) {
+        console.error("failed to upload file", file, err);
+        props.notify(`Failed to upload file ${file.name}`, "error");
+      }
+      setUploadedFiles((prev) => [...prev, file]);
+    }
+    setLoading(false);
+    props.notify("Uploaded the file", "success");
+    props.closeDialog();
+  }, [files]);
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Dialog open={props.isDialogOpen} fullWidth>
-        <DialogTitle>
-          {props.folder ? "Edit folder" : "Create a new folder"}
-        </DialogTitle>
-        <DialogContent>
-          <Box mt={2}>
-            <TextField
-              fullWidth
-              label="Folder name"
-              name="name"
-              value={formik.values.name}
-              helperText="Folder name"
-              onChange={formik.handleChange}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => props.closeDialog()}>Close</Button>
-          <LoadingButton
-            loading={formik.isSubmitting}
-            onClick={() => formik.submitForm()}
-          >
-            Submit
-          </LoadingButton>
-        </DialogActions>
-      </Dialog>
-    </form>
+    <Dialog open={props.isDialogOpen} fullWidth>
+      <DialogTitle>Upload files</DialogTitle>
+      <DialogContent>
+        <Box mt={2}>
+          <Card variant="outlined">
+            {loading && (
+              <LinearProgress value={uploadedFiles.length / files.length} />
+            )}
+            <Stack
+              p={2}
+              direction="row"
+              justifyContent={"space-between"}
+              alignContent="center"
+            >
+              <Typography>
+                {files.length === 0
+                  ? "No file selected"
+                  : `Uploading ${uploadedFiles.length}/${files.length}`}
+              </Typography>
+              <Button component="label">
+                Pick files
+                <input hidden multiple type="file" onChange={onInputChange} />
+              </Button>
+            </Stack>
+          </Card>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.closeDialog()}>Close</Button>
+        <LoadingButton loading={loading} onClick={() => upload()}>
+          Upload
+        </LoadingButton>
+      </DialogActions>
+    </Dialog>
   );
 }

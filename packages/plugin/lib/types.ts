@@ -30,7 +30,7 @@ export interface PluginInterface {
 
   onFolderAreaContextMenu(): NotImplemented | ContextMenu[];
 
-  onFilePreview(file: NasFile): NotImplemented | Implemented;
+  onFilePreview(file: NasFile): NotImplemented | JSX.Element[];
 
   fileIcon(file: NasFile): NotImplemented | JSX.Element;
 }
