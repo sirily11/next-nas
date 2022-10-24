@@ -5,11 +5,15 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { UIContextProvider } from "../contexts/UIProvider";
 import { SnackbarProvider } from "notistack";
 import { PluginSystemProvider } from "../contexts/PluginContext";
+import { SessionProvider } from "next-auth/react";
 
 const theme = createTheme({
   palette: {
     primary: {
       main: "#5529af",
+    },
+    secondary: {
+      main: "#ff0000",
     },
   },
   components: {
@@ -25,17 +29,17 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SnackbarProvider>
-      <UIContextProvider>
-        <PluginSystemProvider>
-          <ThemeProvider theme={theme}>
-            <Layout>
+    <SessionProvider session={(pageProps as any).session}>
+      <SnackbarProvider>
+        <UIContextProvider>
+          <PluginSystemProvider>
+            <ThemeProvider theme={theme}>
               <Component {...pageProps} />
-            </Layout>
-          </ThemeProvider>
-        </PluginSystemProvider>
-      </UIContextProvider>
-    </SnackbarProvider>
+            </ThemeProvider>
+          </PluginSystemProvider>
+        </UIContextProvider>
+      </SnackbarProvider>
+    </SessionProvider>
   );
 }
 
