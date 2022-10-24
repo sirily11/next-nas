@@ -1,6 +1,7 @@
 import { Divider, Grid } from "@mui/material";
 import { NasFolder, NasFolderResponse } from "common";
 import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 import Layout from "../components/Layout";
 import FilesArea from "../components/nas/FilesArea";
@@ -27,6 +28,9 @@ const Home: NextPage<Props> = ({
 
   return (
     <Layout>
+      <Head>
+        <title>NextNas</title>
+      </Head>
       <Grid container sx={{ height: "100%" }} spacing={1}>
         <Grid item xs={12} sm={4} md={3} lg={2} sx={{ height: "100%" }}>
           <FolderList folders={data.folders} currentFolder={currentFolder} />
