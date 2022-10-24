@@ -10,6 +10,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBarSearchField } from "./common/AppBarSearchField";
 import { UIContext } from "../contexts/UIProvider";
+import { signOut } from "next-auth/react";
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -41,7 +42,9 @@ export default function Layout(props: Props) {
             {title ?? "Next Nas"}
           </Typography>
           <AppBarSearchField />
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={() => signOut({ redirect: true })}>
+            Sign Out
+          </Button>
         </Toolbar>
       </AppBar>
       <Box component={"main"} sx={{ height: "100%" }}>
