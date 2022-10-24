@@ -5,6 +5,7 @@ import { UIContext } from "./UIProvider";
 import folderPlugin from "folder-plugin";
 import filePlugin from "file-plugin";
 import imagePlugin from "image-plugin";
+import videoPlugin from "video-plugin";
 import { useParent } from "../hooks/useParent";
 import { pocketBase } from "../services/pocketBaseService";
 
@@ -42,6 +43,7 @@ export function PluginSystemProvider(props: any) {
     system.loadPlugin(folderPlugin, "folder-plugin");
     system.loadPlugin(filePlugin, "file-plugin");
     system.loadPlugin(imagePlugin, "image-plugin");
+    system.loadPlugin(videoPlugin, "video-plugin");
 
     return system;
   }, []);

@@ -29,7 +29,8 @@
     "plugin": "workspace:*",
     "folder-plugin": "workspace:*",
     "file-plugin": "workspace:*",
-    "image-plugin": "workspace:*"
+    "image-plugin": "workspace:*",
+    "video-plugin": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18.11.2",
