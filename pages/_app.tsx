@@ -24,6 +24,14 @@ const theme = createTheme({
         },
       },
     },
+
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#fff",
+        },
+      },
+    },
   },
 });
 
