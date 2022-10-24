@@ -1,29 +1,19 @@
-import {
-  Card,
-  CardActionArea,
-  Menu,
-  Paper,
-  Popover,
-  Popper,
-  Typography,
-} from "@mui/material";
-import { Stack } from "@mui/system";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import ArticleIcon from "@mui/icons-material/Article";
+import { Card, CardActionArea, Paper, Popper, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 import { NasFile } from "common";
 import {
   bindContextMenu,
-  bindHover,
   bindMenu,
-  bindPopover,
   bindPopper,
   PopupState,
 } from "material-ui-popup-state/core";
 import { usePopupState } from "material-ui-popup-state/hooks";
-import NasContextMenu from "../menus/NasContextMenu";
+import Image from "next/image";
 import { ContextMenu } from "plugin";
+import { cloneElement, useContext, useEffect, useMemo, useState } from "react";
 import { PluginSystemContext } from "../../contexts/PluginContext";
+import NasContextMenu from "../menus/NasContextMenu";
 
 interface Props {
   file: NasFile;
@@ -116,7 +106,12 @@ export default function FileItem({ file, parentPopupState }: Props) {
             spacing={2}
             width={300}
           >
-            {PreviewContents}
+            {PreviewContents.map((PreviewContent, index) => {
+              const Preview = cloneElement(PreviewContent, {
+                key: `${file.id}-preview-${index}`,
+              });
+              return Preview;
+            })}
           </Stack>
         </Paper>
       </Popper>

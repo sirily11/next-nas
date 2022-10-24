@@ -7,12 +7,10 @@ import {
   DialogContent,
   DialogTitle,
   LinearProgress,
-  TextField,
   Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { NasFile, NasFolder } from "common";
-import { useFormik } from "formik";
+import { NasFile } from "common";
 import { PluginProps } from "plugin/lib/types";
 import { useCallback, useState } from "react";
 
@@ -49,9 +47,11 @@ export function UploadDialog(props: Props) {
       return;
     }
     setLoading(true);
+    let success = 0;
     for (const file of files) {
       try {
         await props.service.uploadFile(file);
+        success++;
       } catch (err) {
         console.error("failed to upload file", file, err);
         props.notify(`Failed to upload file ${file.name}`, "error");
@@ -59,9 +59,9 @@ export function UploadDialog(props: Props) {
       setUploadedFiles((prev) => [...prev, file]);
     }
     setLoading(false);
-    props.notify("Uploaded the file", "success");
+    props.notify(`Uploaded ${success} out of ${files.length} files`, "info");
     props.closeDialog();
-  }, [files]);
+  }, [files, uploadedFiles]);
 
   return (
     <Dialog open={props.isDialogOpen} fullWidth>

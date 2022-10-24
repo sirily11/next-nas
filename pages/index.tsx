@@ -1,6 +1,7 @@
 import { Divider, Grid } from "@mui/material";
-import { NasFile, NasFolder, NasFolderResponse } from "common";
+import { NasFolder, NasFolderResponse } from "common";
 import type { GetServerSideProps, NextPage } from "next";
+import { useEffect } from "react";
 import Layout from "../components/Layout";
 import FilesArea from "../components/nas/FilesArea";
 import FolderList from "../components/nas/FolderList";
@@ -10,9 +11,20 @@ import { requireAuthentication } from "../utils/requireAuthentication";
 interface Props {
   data: NasFolderResponse;
   currentFolder?: NasFolder;
+  accessToken: string;
+  user: any;
 }
 
-const Home: NextPage<Props> = ({ data, currentFolder }: Props) => {
+const Home: NextPage<Props> = ({
+  data,
+  currentFolder,
+  accessToken,
+  user,
+}: Props) => {
+  useEffect(() => {
+    pocketBase.client.authStore.save(accessToken, user);
+  }, [accessToken, user]);
+
   return (
     <Layout>
       <Grid container sx={{ height: "100%" }} spacing={1}>
@@ -31,9 +43,8 @@ const Home: NextPage<Props> = ({ data, currentFolder }: Props) => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps<Props> = async (context) =>
-  requireAuthentication(context, async (callback: any) => {
+  requireAuthentication(context, async (accessToken, user) => {
     let folder = context.query.folder as string | undefined;
-
     if (!folder) {
       folder = "";
     }
@@ -50,6 +61,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) =>
           currentFolder === undefined
             ? null
             : JSON.parse(JSON.stringify(currentFolder)),
+        accessToken,
+        user,
       },
     };
   });

@@ -32,6 +32,10 @@ export class PocketBaseService implements ServiceInterface {
       if (key === "id") {
         return;
       }
+      if (value === null || value === undefined) {
+        return;
+      }
+
       formData.append(key, value);
     });
     const result = await this.client.records.create("files", formData);
@@ -53,6 +57,8 @@ export class PocketBaseService implements ServiceInterface {
     if (folderId === undefined || folderId === null || folderId === "") {
       return undefined;
     }
+
+    console.log("\ngettingFolderById", this.client.authStore.token);
     const result = await this.client.records.getOne("folders", folderId!);
     return result as any as NasFolder;
   }
