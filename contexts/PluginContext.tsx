@@ -4,6 +4,7 @@ import { UIContext } from "./UIProvider";
 //@ts-ignore
 import folderPlugin from "folder-plugin";
 import filePlugin from "file-plugin";
+import imagePlugin from "image-plugin";
 import { useParent } from "../hooks/useParent";
 import { pocketBase } from "../services/pocketBaseService";
 
@@ -15,8 +16,15 @@ interface PluginSystemInterface {
 export const PluginSystemContext = createContext<PluginSystemInterface>({});
 
 export function PluginSystemProvider(props: any) {
-  const { notify, showDialog, setTitle, closeDialog, isDialogOpen } =
-    useContext(UIContext);
+  const {
+    notify,
+    showDialog,
+    setTitle,
+    closeDialog,
+    isDialogOpen,
+    showRightPanel,
+    closeRightPanel,
+  } = useContext(UIContext);
 
   const pluginSystem = useMemo(() => {
     const system = new PluginSystem({
@@ -27,10 +35,13 @@ export function PluginSystemProvider(props: any) {
       isDialogOpen: false,
       useParent: useParent,
       service: pocketBase,
+      showRightPanel,
+      closeRightPanel,
     });
 
     system.loadPlugin(folderPlugin, "folder-plugin");
     system.loadPlugin(filePlugin, "file-plugin");
+    system.loadPlugin(imagePlugin, "image-plugin");
 
     return system;
   }, []);

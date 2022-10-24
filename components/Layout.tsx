@@ -6,6 +6,7 @@ import {
   IconButton,
   Typography,
   Button,
+  Drawer,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBarSearchField } from "./common/AppBarSearchField";
@@ -17,13 +18,28 @@ interface Props {
 }
 
 export default function Layout(props: Props) {
-  const { title, dialog, isDialogOpen } = useContext(UIContext);
+  const {
+    title,
+    dialog,
+    isDialogOpen,
+    rightPanelContent,
+    isRightPanelOpen,
+    closeRightPanel,
+  } = useContext(UIContext);
 
   const DialogComponent = useMemo(() => {
     if (dialog !== undefined) {
       return cloneElement(dialog, { isDialogOpen: isDialogOpen });
     }
   }, [dialog, isDialogOpen]);
+
+  const RightPanelComponent = useMemo(() => {
+    if (rightPanelContent !== undefined) {
+      return cloneElement(rightPanelContent, {
+        isRightPanelOpen: isRightPanelOpen,
+      });
+    }
+  }, [rightPanelContent, isRightPanelOpen]);
 
   return (
     <Box sx={{ flexGrow: 1, height: "calc(100vh - 64px)" }}>
@@ -50,6 +66,13 @@ export default function Layout(props: Props) {
       <Box component={"main"} sx={{ height: "100%" }}>
         {props.children}
       </Box>
+      <Drawer
+        anchor="right"
+        open={isRightPanelOpen}
+        onClose={() => closeRightPanel()}
+      >
+        {RightPanelComponent}
+      </Drawer>
       {DialogComponent}
     </Box>
   );

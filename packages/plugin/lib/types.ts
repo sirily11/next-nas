@@ -41,6 +41,8 @@ export interface PluginProps {
   showDialog: (children: JSX.Element) => void;
   closeDialog: () => void;
   useParent: () => string | undefined;
+  showRightPanel: (children: JSX.Element) => void;
+  closeRightPanel: () => void;
   isDialogOpen: boolean;
   service: ServiceInterface;
 }
