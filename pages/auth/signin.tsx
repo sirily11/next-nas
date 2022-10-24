@@ -12,6 +12,7 @@ import {
 import { useFormik } from "formik";
 import { NextPage } from "next";
 import { signIn } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 import { UIContext } from "../../contexts/UIProvider";
@@ -44,6 +45,9 @@ const SignIn: NextPage<Props> = ({}: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
+      <Head>
+        <title>Sign in</title>
+      </Head>
       <Grid
         container
         justifyContent={"end"}
