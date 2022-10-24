@@ -26,6 +26,7 @@ export const authOptions = {
           name: pocketBaseUser.user.profile?.name,
           email: credentials!.email,
           token: pocketBaseUser.token,
+          user: pocketBaseUser.user,
         };
         return user;
       },
@@ -35,11 +36,13 @@ export const authOptions = {
     async jwt({ token, user, account, profile, isNewUser }: any) {
       if (user) {
         token.accessToken = user.token;
+        token.user = user.user;
       }
       return token;
     },
     async session({ session, token, user }: any) {
       session.accessToken = token.accessToken;
+      session.user = token.user;
       return session;
     },
   },

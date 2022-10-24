@@ -1,20 +1,16 @@
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth/next";
-import { BaseAuthStore } from "pocketbase";
+import { BaseAuthStore, User } from "pocketbase";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 import { getToken, encode } from "next-auth/jwt";
 import { pocketBase } from "../services/pocketBaseService";
 
+type Callback = (accessToken: string, user: User) => Promise<any>;
+
 class AuthStore extends BaseAuthStore {
-  _token: string;
-
-  constructor(token: string) {
+  constructor(token: string, user: User) {
     super();
-    this._token = token;
-  }
-
-  get token(): string {
-    return this._token;
+    this.save(token, user);
   }
 }
 
@@ -22,7 +18,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export const requireAuthentication = async (
   ctx: GetServerSidePropsContext<any, any>,
-  cb: any
+  cb: Callback
 ) => {
   const session = await unstable_getServerSession(
     ctx.req,
@@ -38,7 +34,8 @@ export const requireAuthentication = async (
       },
     };
   }
-
-  pocketBase.client.authStore = new AuthStore((session as any).accessToken);
-  return cb(session);
+  let userSession = session as any;
+  const store = new AuthStore(userSession.accessToken, userSession.user);
+  pocketBase.client.authStore = store;
+  return cb(userSession.accessToken, userSession.user);
 };
