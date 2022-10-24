@@ -18,9 +18,14 @@ import NasContextMenu from "../menus/NasContextMenu";
 interface Props {
   file: NasFile;
   parentPopupState: PopupState;
+  hightlightedFile?: NasFile;
 }
 
-export default function FileItem({ file, parentPopupState }: Props) {
+export default function FileItem({
+  file,
+  parentPopupState,
+  hightlightedFile,
+}: Props) {
   const [menus, setMenus] = useState<ContextMenu[]>([]);
   const { pluginSystem } = useContext(PluginSystemContext);
 
@@ -64,6 +69,10 @@ export default function FileItem({ file, parentPopupState }: Props) {
   return (
     <Card
       variant="outlined"
+      sx={{
+        borderColor: hightlightedFile?.id === file.id ? "orange" : undefined,
+        borderWidth: hightlightedFile?.id === file.id ? 2 : undefined,
+      }}
       {...bindContextMenu(contextPopupState)}
       onMouseEnter={(e) => {
         if (contextPopupState.isOpen) {

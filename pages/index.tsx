@@ -1,5 +1,5 @@
 import { Divider, Grid } from "@mui/material";
-import { NasFolder, NasFolderResponse } from "common";
+import { NasFile, NasFolder, NasFolderResponse } from "common";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -14,6 +14,7 @@ interface Props {
   currentFolder?: NasFolder;
   accessToken: string;
   user: any;
+  highlightedFile?: NasFile;
 }
 
 const Home: NextPage<Props> = ({
@@ -21,6 +22,7 @@ const Home: NextPage<Props> = ({
   currentFolder,
   accessToken,
   user,
+  highlightedFile,
 }: Props) => {
   useEffect(() => {
     pocketBase.client.authStore.save(accessToken, user);
@@ -37,7 +39,7 @@ const Home: NextPage<Props> = ({
         </Grid>
         <Divider orientation="vertical" flexItem sx={{ marginTop: 1 }} />
         <Grid item xs={12} sm={7} md={8} lg={9}>
-          <FilesArea files={data.files} />
+          <FilesArea files={data.files} highlightedFile={highlightedFile} />
         </Grid>
       </Grid>
     </Layout>
@@ -49,6 +51,9 @@ export default Home;
 export const getServerSideProps: GetServerSideProps<Props> = async (context) =>
   requireAuthentication(context, async (accessToken, user) => {
     let folder = context.query.folder as string | undefined;
+    let highlightedFile = context.query.file as string | undefined;
+    let highlightedFileName = context.query.fileName as string | undefined;
+
     if (!folder) {
       folder = "";
     }
@@ -67,6 +72,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) =>
             : JSON.parse(JSON.stringify(currentFolder)),
         accessToken,
         user,
+        highlightedFile: JSON.parse(
+          JSON.stringify({
+            id: highlightedFile,
+            name: highlightedFileName,
+          })
+        ),
       },
     };
   });

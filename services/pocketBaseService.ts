@@ -22,6 +22,13 @@ export class PocketBaseService implements ServiceInterface {
       this.client = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL!);
     }
   }
+  async searchFiles(query: string): Promise<NasFile[]> {
+    const result = await this.client.records.getFullList("files", undefined, {
+      filter: `name~${`"%${query}%"`}`,
+    });
+
+    return result as any as NasFile[];
+  }
   getFileURL(file: NasFile): string {
     return `${this.url}/api/files/files/${file.id}/${file.file}`;
   }

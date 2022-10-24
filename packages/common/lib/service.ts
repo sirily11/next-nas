@@ -6,6 +6,8 @@ export interface NasFolderResponse {
 }
 
 export interface ServiceInterface {
+  searchFiles(query: string): Promise<NasFile[]>;
+
   getFileURL(file: NasFile): string;
 
   /**

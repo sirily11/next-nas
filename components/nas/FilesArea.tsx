@@ -16,9 +16,13 @@ import { pocketBase } from "../../services/pocketBaseService";
 
 interface Props {
   files: NasFile[];
+  highlightedFile?: NasFile;
 }
 
-export default function FilesArea({ files: serverRenderedFiles }: Props) {
+export default function FilesArea({
+  files: serverRenderedFiles,
+  highlightedFile,
+}: Props) {
   const popupState = usePopupState({ variant: "popover", popupId: "files" });
   const [menus, setMenus] = useState<ContextMenu[]>([]);
   const { pluginSystem } = useContext(PluginSystemContext);
@@ -72,6 +76,7 @@ export default function FilesArea({ files: serverRenderedFiles }: Props) {
         Pinned files
       </Typography>
       <FilesList
+        highlightedFile={highlightedFile}
         files={files.filter((f) => f.pinned)}
         parentPopupState={popupState}
       />
@@ -79,6 +84,7 @@ export default function FilesArea({ files: serverRenderedFiles }: Props) {
         Files
       </Typography>
       <FilesList
+        highlightedFile={highlightedFile}
         files={files.filter((f) => !f.pinned)}
         parentPopupState={popupState}
       />
