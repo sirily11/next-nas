@@ -10,10 +10,10 @@ import { SessionProvider } from "next-auth/react";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#5529af",
+      main: "#2196f3",
     },
     secondary: {
-      main: "#ff0000",
+      main: "#ff9100",
     },
   },
   components: {

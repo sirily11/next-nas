@@ -28,7 +28,8 @@
     "common": "workspace:*",
     "plugin": "workspace:*",
     "folder-plugin": "workspace:*",
-    "file-plugin": "workspace:*"
+    "file-plugin": "workspace:*",
+    "image-plugin": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "18.11.2",

@@ -44,7 +44,11 @@ export default function FileItem({ file, parentPopupState }: Props) {
   const Icon = useMemo(() => {
     const GeneratedIcon = pluginSystem.fileIcon(file);
     if (GeneratedIcon !== "not implemented") {
-      return GeneratedIcon;
+      const CopiedIcon = cloneElement(GeneratedIcon, {
+        width: 100,
+        height: 100,
+      });
+      return CopiedIcon;
     }
     return <Image src={"/DocumentIcon.svg"} width={100} height={100} />;
   }, [file, pluginSystem]);
@@ -79,7 +83,7 @@ export default function FileItem({ file, parentPopupState }: Props) {
         contextPopupState.open(e);
       }}
     >
-      <CardActionArea>
+      <CardActionArea onClick={() => pluginSystem.onFileClick(file)}>
         <Stack p={2} justifyContent="center" alignItems={"center"}>
           {Icon}
           <Stack
