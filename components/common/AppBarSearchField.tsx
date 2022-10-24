@@ -5,9 +5,10 @@ import React from "react";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  color: "black",
+  backgroundColor: alpha("rgb(62, 80, 96)", 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha("rgb(62, 80, 96)", 0.25),
   },
   marginLeft: 0,
   width: "100%",
@@ -48,11 +49,12 @@ export function AppBarSearchField(props: InputBaseProps) {
   return (
     <Search>
       <SearchIconWrapper>
-        <SearchIcon />
+        <SearchIcon color="primary" />
       </SearchIconWrapper>
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+        color="secondary"
         {...props}
       />
     </Search>

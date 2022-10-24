@@ -41,11 +41,11 @@ export class PocketBaseService implements ServiceInterface {
     const result = await this.client.records.create("files", formData);
     return result as any as NasFile;
   }
+
   async deleteFile(fileId?: string | undefined): Promise<void> {
     await this.client.records.delete("files", fileId!);
   }
   async updateFile(file: NasFile): Promise<NasFile> {
-    console.log("updating file", file);
     const result = await this.client.records.update("files", file.id, file);
 
     return result as any as NasFile;
@@ -57,8 +57,6 @@ export class PocketBaseService implements ServiceInterface {
     if (folderId === undefined || folderId === null || folderId === "") {
       return undefined;
     }
-
-    console.log("\ngettingFolderById", this.client.authStore.token);
     const result = await this.client.records.getOne("folders", folderId!);
     return result as any as NasFolder;
   }

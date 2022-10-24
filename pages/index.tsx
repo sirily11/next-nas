@@ -31,7 +31,7 @@ const Home: NextPage<Props> = ({
         <Grid item xs={12} sm={4} md={3} lg={2} sx={{ height: "100%" }}>
           <FolderList folders={data.folders} currentFolder={currentFolder} />
         </Grid>
-        <Divider orientation="vertical" flexItem />
+        <Divider orientation="vertical" flexItem sx={{ marginTop: 1 }} />
         <Grid item xs={12} sm={7} md={8} lg={9}>
           <FilesArea files={data.files} />
         </Grid>

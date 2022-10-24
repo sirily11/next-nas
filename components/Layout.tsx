@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   Drawer,
+  Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBarSearchField } from "./common/AppBarSearchField";
@@ -43,27 +44,33 @@ export default function Layout(props: Props) {
 
   return (
     <Box sx={{ flexGrow: 1, height: "calc(100vh - 64px)" }}>
-      <AppBar position="static">
+      <AppBar position="static" elevation={0}>
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="primary"
             aria-label="menu"
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+            color="black"
+          >
             {title ?? "Next Nas"}
           </Typography>
           <AppBarSearchField />
-          <Button color="inherit" onClick={() => signOut({ redirect: true })}>
+          <Button color="primary" onClick={() => signOut({ redirect: true })}>
             Sign Out
           </Button>
         </Toolbar>
       </AppBar>
       <Box component={"main"} sx={{ height: "100%" }}>
+        <Divider />
         {props.children}
       </Box>
       <Drawer
